@@ -1,6 +1,7 @@
 import { Input } from "./ui/input";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import dayjs from "dayjs";
 import {
   Select,
   SelectContent,
@@ -9,15 +10,30 @@ import {
   SelectValue,
 } from "./ui/select";
 import { debounce } from "@/lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Button } from "./ui/button";
+import { CalendarIcon, MapPinIcon } from "lucide-react";
+import { Calendar } from "./ui/calendar";
+import { DateRange } from "react-day-picker";
 
 export default function Filters() {
   const router = useRouter();
-  const { title, location, type } = router.query;
+  const { title, location, type, from, to } = router.query;
   const [searchValue, setSearchValue] = useState((title as string) || "");
+  const [date, setDate] = useState<DateRange | undefined>(undefined);
+
+  const formatted =
+    date?.from && date?.to
+      ? `${dayjs(date.from).format("MMM D, YYYY")} - ${dayjs(date.to).format(
+          "MMM D, YYYY"
+        )}`
+      : date?.from
+      ? `${dayjs(date.from).format("MMM D, YYYY")} - ...`
+      : "All Dates";
 
   // Function to update url params
   const updateParam = (
-    paramName: "location" | "type" | "title",
+    paramName: "location" | "type" | "title" | "from" | "to",
     value: string
   ) => {
     const currentQuery = { ...router.query };
@@ -33,7 +49,7 @@ export default function Filters() {
     );
   };
 
-  // Debounced update of the title query parameter after delay
+  // Debounced to update title parameter after delay
   const debouncedUpdateQuery = useCallback(
     debounce((value: string) => {
       updateParam("title", value);
@@ -41,12 +57,54 @@ export default function Filters() {
     [router]
   );
 
-  // Update the sate and the url
+  // Update the state and url params
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchValue(value);
     debouncedUpdateQuery(value);
   };
+
+  const handleUpdateDate = () => {
+    if (!date?.from || !date?.to) return;
+    const currentQuery = { ...router.query };
+    currentQuery.from = date.from.toISOString();
+    currentQuery.to = date.to.toISOString();
+
+    router.push(
+      {
+        pathname: router.pathname,
+        query: currentQuery,
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  const handleClearDate = () => {
+    // Reset the date state
+    setDate(undefined);
+
+    // Remove date parameters from URL
+    const currentQuery = { ...router.query };
+    delete currentQuery.from;
+    delete currentQuery.to;
+
+    router.push(
+      {
+        pathname: router.pathname,
+        query: currentQuery,
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  // Set the initial date form url
+  useEffect(() => {
+    if (from && to) {
+      setDate({ from: new Date(from as string), to: new Date(to as string) });
+    }
+  }, [from, to]);
 
   return (
     <div className="flex flex-col gap-5 xl:flex-row xl:justify-between">
@@ -82,6 +140,7 @@ export default function Filters() {
           onValueChange={(value) => updateParam("location", value)}
         >
           <SelectTrigger className="bg-white">
+            <MapPinIcon className="mr-2 h-4 w-4" />
             <SelectValue placeholder="locations" />
           </SelectTrigger>
           <SelectContent>
@@ -93,6 +152,36 @@ export default function Filters() {
             ))}
           </SelectContent>
         </Select>
+
+        {/* Date Select */}
+        <Popover>
+          <PopoverTrigger asChild className="bg-white">
+            <Button
+              variant="outline"
+              className="w-[300px] justify-start text-left font-normal"
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {formatted}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-4 flex flex-col items-end space-y-2">
+            <Calendar
+              mode="range"
+              selected={date}
+              onSelect={setDate}
+              numberOfMonths={2}
+            />
+
+            <div className="flex gap-2">
+              <Button onClick={handleUpdateDate} size="sm">
+                Search
+              </Button>
+              <Button onClick={handleClearDate} size="sm">
+                clear
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );
