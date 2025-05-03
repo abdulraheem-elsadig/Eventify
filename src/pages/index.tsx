@@ -1,4 +1,9 @@
+import Filters from "@/components/Filters";
+import Results from "@/components/Results";
+import { Event } from "@/types";
 import { Poppins } from "next/font/google";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 // Add Poppins font
 const poppins = Poppins({
@@ -8,14 +13,49 @@ const poppins = Poppins({
 });
 
 export default function Home() {
+  const router = useRouter();
+  const {
+    title = "",
+    location = "",
+    type = "",
+    from = "",
+    to = "",
+  } = router.query;
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!router.isReady) return;
+
+      setLoading(true);
+      try {
+        let query = `https://68148b33225ff1af16292eee.mockapi.io/api/v1/events/?`;
+
+        if (title) query += `title=${title}&`;
+        if (location && location !== "all") query += `location=${location}&`;
+        if (type && type !== "all") query += `type=${type}&`;
+
+        const res = await fetch(query);
+        const data = await res.json();
+
+        setEvents(data || []);
+      } catch (err) {
+        setEvents([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [title, location, type, from, to, router.isReady]);
   return (
     <div
       className={`${poppins.className} min-h-screen font-[family-name:var(--font-poppins)]`}
     >
-      <main className="container space-y-6 py-6">
-        {/* Filters */}
-
-        {/* Results */}
+      <main className="space-y-6 py-6">
+        <Filters />
+        <Results data={events} />
       </main>
     </div>
   );
