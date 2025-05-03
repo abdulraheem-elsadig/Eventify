@@ -16,14 +16,18 @@ export default function EventCard({ data }: { data: Event }) {
   return (
     <Card className="p-3 mb-3 rounded-2xl border-hidden bg-white h-full">
       <div className="relative aspect-video rounded-[8px] overflow-hidden">
-        <div className="rounded-full absolute top-3 start-3 z-10 bg-white px-2 h-6 shadow-lg">
+        <span className="rounded-full absolute top-3 start-3 z-10 bg-white px-2 py-1 shadow-lg text-sm">
           {data.type}
-        </div>
+        </span>
 
-        <div className="rounded-full absolute top-3 end-3 z-10 bg-white px-2 flex items-center gap-1 h-6 shadow-lg">
-          <span className="relative flex size-3">
+        <div className="rounded-full absolute top-3 end-3 z-10 bg-white px-2 py-[4px] flex items-center gap-1 shadow-lg">
+          <span className="text-sm">
+            {activeEvent ? "Active" : upcomingEvent ? "Upcoming" : "Expired"}
+          </span>
+          <div className="relative flex size-3">
+            {/* Blink Effect For Active Events */}
             {activeEvent && (
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
             )}
             <span
               className={`relative inline-flex size-3 rounded-full ${
@@ -34,7 +38,7 @@ export default function EventCard({ data }: { data: Event }) {
                   : "bg-gray-500"
               }`}
             />
-          </span>
+          </div>
         </div>
         <Image
           src={imageError ? fallbackSrc : data.image_url}

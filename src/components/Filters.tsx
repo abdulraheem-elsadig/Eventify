@@ -58,11 +58,15 @@ export default function Filters() {
 
   return (
     <div className="flex flex-col gap-5 xl:flex-row xl:justify-between">
-      <Input placeholder="Search Events" className="w-full xl:max-w-[400px]" />
+      <Input
+        placeholder="Search Events"
+        className="w-full xl:max-w-[400px] bg-white"
+        onChange={(e) => setTitle(e.target.value)}
+      />
       <div className="flex gap-3 flex-wrap">
         {/* Type Select */}
         <Select value={type} onValueChange={setType}>
-          <SelectTrigger>
+          <SelectTrigger className="bg-white">
             <SelectValue placeholder="type" />
           </SelectTrigger>
           <SelectContent>
@@ -77,7 +81,7 @@ export default function Filters() {
 
         {/* Location Select */}
         <Select value={location} onValueChange={setLocation}>
-          <SelectTrigger>
+          <SelectTrigger className="bg-white">
             <SelectValue placeholder="locations" />
           </SelectTrigger>
           <SelectContent>
