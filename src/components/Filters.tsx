@@ -1,7 +1,6 @@
 import { Input } from "./ui/input";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import { debounce } from "@/utils";
+import { useCallback, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -9,63 +8,61 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { debounce } from "@/lib/utils";
 
 export default function Filters() {
   const router = useRouter();
+  const { title, location, type } = router.query;
+  const [searchValue, setSearchValue] = useState((title as string) || "");
 
-  const [title, setTitle] = useState(
-    () => (router.query.title as string) || ""
-  );
-  const [location, setLocation] = useState<string>(() =>
-    typeof router.query.location === "string" ? router.query.location : "all"
-  );
+  // Function to update url params
+  const updateParam = (
+    paramName: "location" | "type" | "title",
+    value: string
+  ) => {
+    const currentQuery = { ...router.query };
+    currentQuery[paramName] = value;
+    if (!value || value === "all") delete currentQuery[paramName];
+    router.push(
+      {
+        pathname: router.pathname,
+        query: currentQuery,
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
 
-  const [type, setType] = useState<string>(() =>
-    typeof router.query.type === "string" ? router.query.type : "all"
-  );
-
-  const debouncedSearch = useRef(
+  // Debounced update of the title query parameter after delay
+  const debouncedUpdateQuery = useCallback(
     debounce((value: string) => {
-      const query = { ...router.query };
-      if (value.trim()) query.title = value;
-      else delete query.q;
-      router.push({ pathname: router.pathname, query }, undefined, {
-        shallow: true,
-      });
-    }, 500)
-  ).current;
+      updateParam("title", value);
+    }, 500),
+    [router]
+  );
 
-  useEffect(() => {
-    debouncedSearch(title);
-    return () => debouncedSearch.cancel?.();
-  }, [title]);
-
-  useEffect(() => {
-    const query: any = { ...router.query };
-
-    // location
-    if (location && location !== "all") query.location = location;
-    else delete query.location;
-
-    // type
-    if (type && type !== "all") query.type = type;
-    else delete query.type;
-
-    router.push({ pathname: router.pathname, query }, undefined, {
-      shallow: true,
-    });
-  }, [location, type]);
+  // Update the sate and the url
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    debouncedUpdateQuery(value);
+  };
 
   return (
     <div className="flex flex-col gap-5 xl:flex-row xl:justify-between">
+      {/* Search Input */}
       <Input
         placeholder="Search Events"
         className="w-full xl:max-w-[400px] bg-white"
-        onChange={(e) => setTitle(e.target.value)}
+        value={searchValue || title}
+        onChange={handleSearchChange}
       />
       <div className="flex gap-3 flex-wrap">
         {/* Type Select */}
-        <Select value={type} onValueChange={setType}>
+        <Select
+          value={(type as string) || "all"}
+          onValueChange={(value) => updateParam("type", value)}
+        >
           <SelectTrigger className="bg-white">
             <SelectValue placeholder="type" />
           </SelectTrigger>
@@ -80,7 +77,10 @@ export default function Filters() {
         </Select>
 
         {/* Location Select */}
-        <Select value={location} onValueChange={setLocation}>
+        <Select
+          value={(location as string) || "all"}
+          onValueChange={(value) => updateParam("location", value)}
+        >
           <SelectTrigger className="bg-white">
             <SelectValue placeholder="locations" />
           </SelectTrigger>

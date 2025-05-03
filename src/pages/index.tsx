@@ -49,6 +49,7 @@ export default function Home() {
 
     fetchData();
   }, [title, location, type, from, to, router.isReady]);
+
   return (
     <div
       className={`${poppins.className} min-h-screen font-[family-name:var(--font-poppins)]`}
