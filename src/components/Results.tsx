@@ -1,3 +1,14 @@
+/**
+ * Results Component
+ *
+ * Displays a grid of event cards based on provided `data`.
+ * Optionally filters events by a date range specified in the URL query (`from` and `to`).
+ * If no events match the filters, it shows a fallback "No Results Found" message with an image.
+ *
+ * @param {Object} props
+ * @param {Event[]} props.data - Array of event objects to display
+ */
+
 import { Event } from "@/types";
 import Link from "next/link";
 import EventCard from "./EventCard";

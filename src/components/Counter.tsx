@@ -1,3 +1,18 @@
+/**
+ * A countdown timer component that displays the time remaining
+ * until a given start time and expiration time.
+ *
+ * It shows:
+ * - "Starting in" if the current time is before the `startAt` timestamp.
+ * - "Ending in" if the current time is between `startAt` and `expiresAt`.
+ * - "Expired" if the current time is after `expiresAt`.
+ *
+ * @param {string} startAt - ISO string indicating when the event starts.
+ * @param {string} expiresAt - ISO string indicating when the event ends.
+ *
+ * @returns A visual countdown showing days, hours, and minutes.
+ */
+
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
@@ -40,7 +55,7 @@ export default function Counter({
     calculateTime();
     const interval = setInterval(() => {
       calculateTime();
-    }, 60000);
+    }, 60000); // update ui every 1 min
 
     return () => clearInterval(interval);
   }, [startAt, expiresAt]);

@@ -1,3 +1,13 @@
+/**
+ * Filters component for searching and filtering events based on:
+ * - Text search (title)
+ * - Event type
+ * - Location
+ * - Date range
+ *
+ * Filters are synced with the URL query parameters to allow deep linking and state persistence.
+ */
+
 import { Input } from "./ui/input";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -22,7 +32,8 @@ export default function Filters() {
   const [searchValue, setSearchValue] = useState((title as string) || "");
   const [date, setDate] = useState<DateRange | undefined>(undefined);
 
-  const formatted =
+  // String to display in the calendar button
+  const formattedDateRange =
     date?.from && date?.to
       ? `${dayjs(date.from).format("MMM D, YYYY")} - ${dayjs(date.to).format(
           "MMM D, YYYY"
@@ -49,7 +60,7 @@ export default function Filters() {
     );
   };
 
-  // Debounced to update title parameter after delay
+  // Debounced to update search after delay
   const debouncedUpdateQuery = useCallback(
     debounce((value: string) => {
       updateParam("title", value);
@@ -57,13 +68,14 @@ export default function Filters() {
     [router]
   );
 
-  // Update the state and url params
+  // Update search on change (state & params)
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchValue(value);
     debouncedUpdateQuery(value);
   };
 
+  // Update the date params (from & to) in url
   const handleUpdateDate = () => {
     if (!date?.from || !date?.to) return;
     const currentQuery = { ...router.query };
@@ -99,7 +111,7 @@ export default function Filters() {
     );
   };
 
-  // Set the initial date form url
+  // Set the initial state for date from url
   useEffect(() => {
     if (from && to) {
       setDate({ from: new Date(from as string), to: new Date(to as string) });
@@ -161,7 +173,7 @@ export default function Filters() {
               className="w-[300px] justify-start text-left font-normal"
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {formatted}
+              {formattedDateRange}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-4 flex flex-col items-end space-y-2">

@@ -1,3 +1,10 @@
+/**
+ * Logo component for the application.
+ *
+ * Renders the application name "Eventify" alongside a favicon image.
+ * Acts as a clickable link that navigates users back to the home page ("/").
+ */
+
 import Image from "next/image";
 import Link from "next/link";
 

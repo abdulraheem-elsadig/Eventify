@@ -1,3 +1,15 @@
+/**
+ * Event Page
+ *
+ * Displays detailed information about a single event, including:
+ * - Title, location, type, image
+ * - Countdown timer to start/end using a `Counter` component
+ * - SEO meta tags for social sharing
+ *
+ * @param {Object} props
+ * @param {Event} props.event - The event data to be displayed
+ */
+
 import Counter from "@/components/Counter";
 import { Event } from "@/types";
 import { MapPinIcon } from "lucide-react";

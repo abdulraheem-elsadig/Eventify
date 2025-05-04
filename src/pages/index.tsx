@@ -1,3 +1,19 @@
+/**
+ * Home Page
+ *
+ * This is the main page of the application that displays a list of events based on various filters such as:
+ * - Event title
+ * - Event location
+ * - Event type
+ * - Date range (if provided in URL)
+ *
+ * The page consists of two main sections:
+ * 1. `Filters`: Provides UI to filter events based on different criteria.
+ * 2. `Results`: Displays the filtered list of events fetched from the API.
+ *
+ * @returns {JSX.Element} The Home page JSX containing the Filters and Results components
+ */
+
 import Filters from "@/components/Filters";
 import Results from "@/components/Results";
 import { Event } from "@/types";

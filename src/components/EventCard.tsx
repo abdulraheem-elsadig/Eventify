@@ -1,14 +1,24 @@
+/**
+ * Renders a visual card displaying details about an event, including its title,
+ * date range, location, image, type, and status (Upcoming, Active, or Expired).
+ *
+ * @param {Object} props
+ * @param {Event} props.data - The event object containing all necessary event details.
+ *
+ * @returns A styled card component representing an event.
+ */
+
 import { Event } from "@/types";
-import { Card } from "./ui/card";
 import dayjs from "dayjs";
+import { MapPinIcon } from "lucide-react";
+
+import { Card } from "./ui/card";
 import ImageWithFallback from "./ImageWithFallback";
-import { MapPinCheckIcon, MapPinIcon } from "lucide-react";
 
 export default function EventCard({ data }: { data: Event }) {
   const upcomingEvent = dayjs().isBefore(data.starts_at);
   const activeEvent =
     dayjs().isAfter(data.starts_at) && dayjs().isBefore(data.expires_at);
-  const expiredEvent = dayjs().isAfter(data.expires_at);
 
   return (
     <Card className="p-3 mb-3 rounded-2xl border-hidden bg-white h-full">
