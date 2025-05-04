@@ -6,10 +6,17 @@
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/abdulraheem-elsadig/Eventify)
 [![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![Styled with Tailwind CSS](https://img.shields.io/badge/Styled%20with-Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Figma Design](https://img.shields.io/badge/Figma-Design-F24E1E?style=for-the-badge&logo=figma)](https://www.figma.com/design/MOJqwBeHhuLnk6K2ZlM4dL/Events-Platform?node-id=0-1&p=f&t=NwmaSDKqNYiCGD2e-0)
 
 A modern, responsive event discovery platform built with **Next.js** (Pages Router), **Tailwind CSS**, and optimized with **Static Site Generation (SSG)**. Browse events with powerful filtering options and real-time status indicators.
 
-![Eventify Screenshot](https://eventify-wine-phi.vercel.app/og-image.png)
+## 🔗 Quick Links
+
+- **Live Demo**: [eventify-wine-phi.vercel.app](https://eventify-wine-phi.vercel.app/)
+- **GitHub Repository**: [github.com/abdulraheem-elsadig/Eventify](https://github.com/abdulraheem-elsadig/Eventify)
+- **Figma Design**: [Eventify UI/UX Design](https://www.figma.com/design/MOJqwBeHhuLnk6K2ZlM4dL/Events-Platform?node-id=0-1&p=f&t=NwmaSDKqNYiCGD2e-0)
+
+![Eventify Screenshot](https://drive.google.com/uc?export=view&id=1qNfmbVbwgy5gl-tutDiJieNcGyv526So)
 
 ## ✨ Features
 
@@ -103,3 +110,18 @@ During development, check your browser console for revalidation logs:
 [revalidate] No change for path /events/1.
 [revalidate] Path /events/2 was revalidated due to data change.
 ```
+
+## 🎨 Design Process
+
+This project was designed from scratch using Figma. The UI/UX design focuses on:
+
+- Clean, modern interface with intuitive navigation
+- Consistent visual language across all components
+- Responsive layouts optimized for all devices
+- Accessibility considerations for all users
+
+<img src="https://placehold.co/800x400?text=Eventify+Design+Screenshot" alt="Eventify Figma Design" width="100%" />
+
+👉 **View the complete design**: [Figma Design File](https://www.figma.com/design/MOJqwBeHhuLnk6K2ZlM4dL/Events-Platform?node-id=0-1&p=f&t=NwmaSDKqNYiCGD2e-0)
+
+Eventify | Designed & Developed by [Abdulraheem Elsadig](https://github.com/abdulraheem-elsadig)
