@@ -1,0 +1,69 @@
+import React, { useEffect, useState } from "react";
+import dayjs from "dayjs";
+
+export default function Counter({
+  startAt,
+  expiresAt,
+}: {
+  startAt: string;
+  expiresAt: string;
+}) {
+  const [status, setStatus] = useState("");
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0 });
+
+  const calculateTime = () => {
+    const now = dayjs();
+    const start = dayjs(startAt);
+    const end = dayjs(expiresAt);
+
+    if (now.isBefore(start)) {
+      setStatus("Starting in");
+      setTimeLeft(getTimeDiff(start.diff(now)));
+    } else if (now.isBefore(end)) {
+      setStatus("Ending in");
+      setTimeLeft(getTimeDiff(end.diff(now)));
+    } else {
+      setStatus("Expired");
+      setTimeLeft({ days: 0, hours: 0, minutes: 0 });
+    }
+  };
+
+  const getTimeDiff = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const days = Math.floor(totalSeconds / (3600 * 24));
+    const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    return { days, hours, minutes };
+  };
+
+  useEffect(() => {
+    calculateTime();
+    const interval = setInterval(() => {
+      calculateTime();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [startAt, expiresAt]);
+
+  return (
+    <div>
+      <h3 className="text-base mb-4">{status}</h3>
+      {status !== "Expired" && (
+        <div className="flex items-center gap-3">
+          <TimeBox label="Days" value={timeLeft.days} />
+          <TimeBox label="Hours" value={timeLeft.hours} />
+          <TimeBox label="Minutes" value={timeLeft.minutes} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+const TimeBox = ({ label, value }: { label: string; value: number }) => {
+  return (
+    <div className="bg-white flex flex-col items-center w-full py-4 rounded-lg shadow-lg">
+      <span className="font-bold text-xl">{value}</span>
+      <span>{label}</span>
+    </div>
+  );
+};
