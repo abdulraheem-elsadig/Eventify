@@ -15,6 +15,7 @@
  */
 
 import Filters from "@/components/Filters";
+import InfoView from "@/components/InfoView";
 import Results from "@/components/Results";
 import { Event } from "@/types";
 import { Poppins } from "next/font/google";
@@ -37,28 +38,39 @@ export default function Home() {
     to = "",
   } = router.query;
   const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!router.isReady) return;
+      setIsLoading(true);
+      setError(null); // Clear previous errors before starting new fetch
 
-      setLoading(true);
       try {
         let query = `https://68148b33225ff1af16292eee.mockapi.io/api/v1/events/?`;
-
         if (title) query += `title=${title}&`;
         if (location && location !== "all") query += `location=${location}&`;
         if (type && type !== "all") query += `type=${type}&`;
 
         const res = await fetch(query);
-        const data = await res.json();
 
+        if (!res.ok) {
+          if (res.status === 404) {
+            setEvents([]); // Handle 404 by setting empty list
+            return;
+          }
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
         setEvents(Array.isArray(data) ? data : []);
       } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        setError(errorMessage); // Only set for non-404 errors
         setEvents([]);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -71,7 +83,13 @@ export default function Home() {
     >
       <main className="space-y-6 py-6">
         <Filters />
-        <Results data={events} />
+        {isLoading ? (
+          <InfoView title="Loading..." />
+        ) : error ? (
+          <InfoView title="Error" subtitle={error} />
+        ) : (
+          <Results data={events} />
+        )}
       </main>
     </div>
   );
