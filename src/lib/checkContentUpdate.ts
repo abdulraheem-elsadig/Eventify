@@ -20,10 +20,12 @@ export async function checkContentUpdate({
   path,
   id,
   originalData,
+  onRevalidated,
 }: {
   path: string;
   id: string | number;
   originalData: any;
+  onRevalidated: () => void;
 }) {
   try {
     const res = await fetch(
@@ -40,6 +42,7 @@ export async function checkContentUpdate({
     if (changed) {
       // Revalidate event page when content change
       await fetch(`/api/revalidate?path=${encodeURIComponent(path)}`);
+      onRevalidated();
       console.log(
         `[revalidate] Path ${path} was revalidated due to data change.`
       );
