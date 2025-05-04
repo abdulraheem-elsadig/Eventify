@@ -30,6 +30,9 @@ export default function EventPage({ event, id }: PageProps) {
       path: `/events/${id}`,
       id: id,
       originalData: event,
+      onRevalidated: () => {
+        window.location.reload(); // ← force full reload to see updated static content
+      },
     });
   }, []);
 
