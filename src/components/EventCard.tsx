@@ -17,7 +17,7 @@ import ImageWithFallback from "./ImageWithFallback";
 
 export default function EventCard({ data }: { data: Event }) {
   const upcomingEvent = dayjs().isBefore(data.starts_at);
-  const activeEvent =
+  const ongoingEvent =
     dayjs().isAfter(data.starts_at) && dayjs().isBefore(data.expires_at);
 
   return (
@@ -29,16 +29,16 @@ export default function EventCard({ data }: { data: Event }) {
 
         <div className="rounded-full absolute top-3 end-3 z-10 bg-white px-2 py-[4px] flex items-center gap-1 shadow-lg">
           <span className="text-[12px]">
-            {activeEvent ? "Active" : upcomingEvent ? "Upcoming" : "Expired"}
+            {ongoingEvent ? "Ongoing" : upcomingEvent ? "Upcoming" : "Expired"}
           </span>
           <div className="relative flex size-3">
             {/* Blink Effect For Active Events */}
-            {activeEvent && (
+            {ongoingEvent && (
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
             )}
             <span
               className={`relative inline-flex size-3 rounded-full ${
-                activeEvent
+                ongoingEvent
                   ? "bg-green-500"
                   : upcomingEvent
                   ? "bg-yellow-400"

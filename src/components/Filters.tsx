@@ -195,7 +195,7 @@ export default function Filters() {
             <SelectValue placeholder="type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
+            <SelectItem value="all">All Categories</SelectItem>
             {eventTypeList.map((item, index) => (
               <SelectItem value={item} key={index}>
                 {item}
