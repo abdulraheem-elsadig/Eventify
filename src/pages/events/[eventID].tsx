@@ -84,7 +84,7 @@ export default function EventPage({ data, id }: PageProps) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await fetch(
-    "https://681743db26a599ae7c39cff0.mockapi.io/api/v1/events"
+    "https://68148b33225ff1af16292eee.mockapi.io/api/v1/events"
   );
   const data = await res.json();
 
@@ -98,7 +98,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id = params?.eventID;
   const res = await fetch(
-    `https://681743db26a599ae7c39cff0.mockapi.io/api/v1/events/?id=${id}`
+    `https://68148b33225ff1af16292eee.mockapi.io/api/v1/events/?id=${id}`
   );
   const events: Event[] = await res.json();
 

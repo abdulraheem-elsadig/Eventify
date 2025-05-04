@@ -52,7 +52,7 @@ export default function Home() {
       setError(null); // Clear previous errors before starting new fetch
 
       try {
-        let query = `https://681743db26a599ae7c39cff0.mockapi.io/api/v1/events/?`;
+        let query = `https://68148b33225ff1af16292eee.mockapi.io/api/v1/events/?`;
         if (title) query += `title=${title}&`;
         if (location && location !== "all") query += `location=${location}&`;
         if (type && type !== "all") query += `type=${type}&`;
