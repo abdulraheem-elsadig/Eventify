@@ -19,6 +19,7 @@ import InfoView from "@/components/InfoView";
 import Results from "@/components/Results";
 import { Event } from "@/types";
 import { Poppins } from "next/font/google";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -78,19 +79,38 @@ export default function Home() {
   }, [title, location, type, from, to, router.isReady]);
 
   return (
-    <div
-      className={`${poppins.className} min-h-screen font-[family-name:var(--font-poppins)]`}
-    >
-      <main className="space-y-6 py-6">
-        <Filters />
-        {isLoading ? (
-          <InfoView title="Loading..." />
-        ) : error ? (
-          <InfoView title="Error" subtitle={error} />
-        ) : (
-          <Results data={events} />
-        )}
-      </main>
-    </div>
+    <>
+      <Head>
+        <meta
+          name="description"
+          content="Manage events easily with Eventify – your all-in-one solution for planning, registration, ticketing, and real-time updates."
+        />
+        <meta property="og:title" content="Eventify" />
+        <meta
+          property="og:description"
+          content="Manage events easily with Eventify – your all-in-one solution for planning, registration, ticketing, and real-time updates."
+        />
+        <meta property="og:image" content="/favicon/favicon-96x96.png" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Eventify" />
+        <meta name="twitter:description" content="/favicon/favicon-96x96.png" />
+        <meta name="twitter:image" content="/favicon/favicon-96x96.png" />
+      </Head>
+      <div
+        className={`${poppins.className} min-h-screen font-[family-name:var(--font-poppins)]`}
+      >
+        <main className="space-y-6 py-6">
+          <Filters />
+          {isLoading ? (
+            <InfoView title="Loading..." />
+          ) : error ? (
+            <InfoView title="Error" subtitle={error} />
+          ) : (
+            <Results data={events} />
+          )}
+        </main>
+      </div>
+    </>
   );
 }
