@@ -198,7 +198,7 @@ export default function Filters() {
           <PopoverTrigger asChild className="bg-white">
             <Button
               variant="outline"
-              className="w-[300px] justify-start text-left font-normal"
+              className="w-fit justify-start text-left font-normal"
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
               {formattedDateRange}
