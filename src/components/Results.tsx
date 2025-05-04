@@ -12,14 +12,15 @@
 import { Event } from "@/types";
 import Link from "next/link";
 import EventCard from "./EventCard";
-import { useRouter } from "next/router";
 import dayjs from "dayjs";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 export default function Results({ data }: { data: Event[] }) {
-  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const { from, to } = router.query;
+  const from = searchParams?.get("from") || "";
+  const to = searchParams?.get("to") || "";
 
   const filterData =
     from && to

@@ -1,3 +1,21 @@
+/**
+ * InfoView Component
+ *
+ * A centered informational UI component that optionally displays an image,
+ * title, subtitle, and an action button.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {string} [props.src] - Optional source URL for the image.
+ * @param {string} [props.alt] - Alternative text for the image.
+ * @param {string} [props.title] - Title text displayed prominently.
+ * @param {string} [props.subtitle] - Subtitle or description text.
+ * @param {() => void} [props.action] - Optional click handler for the button.
+ * @param {string} [props.actionTitle] - Text to display on the action button.
+ *
+ * @returns {JSX.Element} Rendered InfoView component.
+ */
+
 import Image from "next/image";
 import { Button } from "./ui/button";
 

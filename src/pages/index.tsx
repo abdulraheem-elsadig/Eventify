@@ -20,6 +20,7 @@ import Results from "@/components/Results";
 import { Event } from "@/types";
 import { Poppins } from "next/font/google";
 import Head from "next/head";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -31,13 +32,15 @@ const poppins = Poppins({
 
 export default function Home() {
   const router = useRouter();
-  const {
-    title = "",
-    location = "",
-    type = "",
-    from = "",
-    to = "",
-  } = router.query;
+  const searchParams = useSearchParams();
+
+  // Get values from searchParams
+  const title = searchParams?.get("title") || "";
+  const location = searchParams?.get("location") || "";
+  const type = searchParams?.get("type") || "";
+  const from = searchParams?.get("from") || "";
+  const to = searchParams?.get("to") || "";
+
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
