@@ -29,7 +29,7 @@ export async function checkContentUpdate({
 }) {
   try {
     const res = await fetch(
-      `https://68148b33225ff1af16292eee.mockapi.io/api/v1/events/?id=${id}`
+      `https://681743db26a599ae7c39cff0.mockapi.io/api/v1/events/?id=${id}`
     );
     const data: Event[] = await res.json();
 
