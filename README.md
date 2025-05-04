@@ -120,7 +120,7 @@ This project was designed from scratch using Figma. The UI/UX design focuses on:
 - Responsive layouts optimized for all devices
 - Accessibility considerations for all users
 
-<img src="https://placehold.co/800x400?text=Eventify+Design+Screenshot" alt="Eventify Figma Design" width="100%" />
+![Eventify Screenshot](https://drive.google.com/uc?export=view&id=1qNfmbVbwgy5gl-tutDiJieNcGyv526So)
 
 👉 **View the complete design**: [Figma Design File](https://www.figma.com/design/MOJqwBeHhuLnk6K2ZlM4dL/Events-Platform?node-id=0-1&p=f&t=NwmaSDKqNYiCGD2e-0)
 
