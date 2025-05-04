@@ -2,19 +2,29 @@
 
 > **Modern Event Discovery & Management Platform**
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://eventify-wine-phi.vercel.app/)
-[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/abdulraheem-elsadig/Eventify)
-[![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![Styled with Tailwind CSS](https://img.shields.io/badge/Styled%20with-Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
-[![Figma Design](https://img.shields.io/badge/Figma-Design-F24E1E?style=for-the-badge&logo=figma)](https://www.figma.com/design/MOJqwBeHhuLnk6K2ZlM4dL/Events-Platform?node-id=0-1&p=f&t=NwmaSDKqNYiCGD2e-0)
+<a href="https://eventify-wine-phi.vercel.app/" target="_blank">
+  <img src="https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel" alt="Deployed on Vercel">
+</a>
+<a href="https://github.com/abdulraheem-elsadig/Eventify" target="_blank">
+  <img src="https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github" alt="GitHub Repository">
+</a>
+<a href="https://nextjs.org/" target="_blank">
+  <img src="https://img.shields.io/badge/Built%20with-Next.js-black?style=for-the-badge&logo=next.js" alt="Built with Next.js">
+</a>
+<a href="https://tailwindcss.com/" target="_blank">
+  <img src="https://img.shields.io/badge/Styled%20with-Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Styled with Tailwind CSS">
+</a>
+<a href="https://www.figma.com/design/MOJqwBeHhuLnk6K2ZlM4dL/Events-Platform?node-id=0-1&p=f&t=NwmaSDKqNYiCGD2e-0" target="_blank">
+  <img src="https://img.shields.io/badge/Figma-Design-F24E1E?style=for-the-badge&logo=figma" alt="Figma Design">
+</a>
 
 A modern, responsive event discovery platform built with **Next.js** (Pages Router), **Tailwind CSS**, and optimized with **Static Site Generation (SSG)**. Browse events with powerful filtering options and real-time status indicators.
 
 ## 🔗 Quick Links
 
-- **Live Demo**: [eventify-wine-phi.vercel.app](https://eventify-wine-phi.vercel.app/)
-- **GitHub Repository**: [github.com/abdulraheem-elsadig/Eventify](https://github.com/abdulraheem-elsadig/Eventify)
-- **Figma Design**: [Eventify UI/UX Design](https://www.figma.com/design/MOJqwBeHhuLnk6K2ZlM4dL/Events-Platform?node-id=0-1&p=f&t=NwmaSDKqNYiCGD2e-0)
+- **Live Demo**: <a href="https://eventify-wine-phi.vercel.app/" target="_blank">eventify-wine-phi.vercel.app</a>
+- **GitHub Repository**: <a href="https://github.com/abdulraheem-elsadig/Eventify" target="_blank">github.com/abdulraheem-elsadig/Eventify</a>
+- **Figma Design**: <a href="https://www.figma.com/design/MOJqwBeHhuLnk6K2ZlM4dL/Events-Platform?node-id=0-1&p=f&t=NwmaSDKqNYiCGD2e-0" target="_blank">Eventify UI/UX Design</a>
 
 ![Eventify Screenshot](https://drive.google.com/uc?export=view&id=1qNfmbVbwgy5gl-tutDiJieNcGyv526So)
 
