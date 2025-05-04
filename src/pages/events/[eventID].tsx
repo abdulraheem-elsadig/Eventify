@@ -71,8 +71,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   // Filter to the exact match
   const event = data.find((event) => event.id === Number(id));
 
-  console.log(event);
-
   if (!event) {
     return { notFound: true };
   }
