@@ -11,11 +11,11 @@
  */
 
 import Counter from "@/components/Counter";
+import ImageWithFallback from "@/components/ImageWithFallback";
 import { Event } from "@/types";
 import { MapPinIcon } from "lucide-react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import Image from "next/image";
 
 type PageProps = {
   event: Event;
@@ -37,21 +37,27 @@ export default function EventPage({ event }: PageProps) {
         <meta name="twitter:image" content={event.image_url} />
       </Head>
       <main>
-        <div className="relative aspect-video mt-6 mb-8 rounded-[12px] overflow-hidden">
-          <Image src={event.image_url} alt={event.title} fill />
+        <div className="relative aspect-video mt-6 mb-8 rounded-[12px] overflow-hidden w-full max-h-[400px] border">
+          <ImageWithFallback
+            src={event.image_url}
+            alt={event.title}
+            fill
+            fallbackSrc="/images/empty-image.png"
+            className="object-cover"
+          />
           <span className="rounded-full absolute bottom-3 start-3 z-10 bg-white px-2 py-1 shadow-lg text-sm">
             {event.type}
           </span>
         </div>
-        <div className="flex flex-col gap-5">
-          <div className="">
-            <div className="flex items-center gap-1 mb-2">
+        <div className="flex flex-col gap-5 lg:flex-row lg:justify-between">
+          <div>
+            <span className="text-primary-gray font-medium flex items-center gap-1 mb-2">
               <MapPinIcon className="size-4" />
-              <span>{event.location}</span>
-            </div>
+              {event.location}
+            </span>
+
             <h1 className="text-2xl font-bold">{event.title}</h1>
           </div>
-          {/* Counter */}
           <Counter startAt={event.starts_at} expiresAt={event.expires_at} />
         </div>
         <p className="mt-10">{event.description}</p>

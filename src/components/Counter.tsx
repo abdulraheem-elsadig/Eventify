@@ -15,6 +15,7 @@
 
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import { ClockIcon } from "lucide-react";
 
 export default function Counter({
   startAt,
@@ -62,9 +63,12 @@ export default function Counter({
 
   return (
     <div>
-      <h3 className="text-base mb-4">{status}</h3>
+      <h3 className="flex items-center gap-1 text-primary-gray font-medium mb-3">
+        <ClockIcon className="size-4" />
+        {status}
+      </h3>
       {status !== "Expired" && (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 w-full lg:w-[400px]">
           <TimeBox label="Days" value={timeLeft.days} />
           <TimeBox label="Hours" value={timeLeft.hours} />
           <TimeBox label="Minutes" value={timeLeft.minutes} />
@@ -76,7 +80,7 @@ export default function Counter({
 
 const TimeBox = ({ label, value }: { label: string; value: number }) => {
   return (
-    <div className="bg-white flex flex-col items-center w-full py-4 rounded-lg shadow-lg">
+    <div className="bg-white flex flex-col items-center w-full p-4 rounded-lg shadow-lg">
       <span className="font-bold text-xl">{value}</span>
       <span>{label}</span>
     </div>
