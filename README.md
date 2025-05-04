@@ -1,40 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# 🗓️ Eventify
 
-## Getting Started
+> **Modern Event Discovery & Management Platform**
 
-First, run the development server:
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://eventify-wine-phi.vercel.app/)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/abdulraheem-elsadig/Eventify)
+[![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Styled with Tailwind CSS](https://img.shields.io/badge/Styled%20with-Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+
+A modern, responsive event discovery platform built with **Next.js** (Pages Router), **Tailwind CSS**, and optimized with **Static Site Generation (SSG)**. Browse events with powerful filtering options and real-time status indicators.
+
+![Eventify Screenshot](https://eventify-wine-phi.vercel.app/og-image.png)
+
+## ✨ Features
+
+### Core Functionality
+
+- **Advanced Filtering System** - Search events by title, category, location, and date range
+- **Dynamic Status Indicators** - Real-time countdowns based on event status:
+  - ⏳ **Upcoming events**: "Starting in 2 days : 5 hours : 30 minutes"
+  - 🔄 **Ongoing events**: "Ending in 6 hours : 15 minutes"
+  - 🛑 **Expired events**: "Expired" badge
+
+### Technical Features
+
+- 📆 **Interactive date selection** powered by shadcn/ui components
+- 🔁 **Automatic data updates** via Incremental Static Regeneration (ISR)
+- 📱 **Fully responsive design** adapts to any device
+- ⚡ **Performance optimized** with Static Site Generation (SSG)
+- 🧩 **Modular components** for maintainability and reuse
+
+## 🚀 Tech Stack
+
+| Technology                               | Purpose                                 |
+| ---------------------------------------- | --------------------------------------- |
+| [Next.js](https://nextjs.org/)           | React framework with Pages Router & SSG |
+| [Tailwind CSS](https://tailwindcss.com/) | Utility-first CSS framework             |
+| [shadcn/ui](https://ui.shadcn.com/)      | Accessible component library            |
+| [Day.js](https://day.js.org/)            | Lightweight date/time manipulation      |
+| [Lucide Icons](https://lucide.dev/)      | Modern SVG icon system                  |
+
+## 📦 Installation & Setup
+
+### Prerequisites
+
+- Node.js (v18+)
+- Package manager (npm, yarn, or pnpm)
+
+### Clone & Install
 
 ```bash
+# Clone repository
+git clone https://github.com/abdulraheem-elsadig/Eventify.git
+
+# Navigate to project directory
+cd Eventify
+
+# Install dependencies
+npm install
+# or with yarn/pnpm
+yarn install
+pnpm install
+```
+
+### Development
+
+```bash
+# Start development server
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Production
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+# Build for production
+npm run build
+# Start production server
+npm start
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+# Or with yarn/pnpm
+yarn build && yarn start
+pnpm build && pnpm start
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+## 🔁 Data Revalidation
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Eventify uses **Incremental Static Regeneration (ISR)** to keep event data fresh without sacrificing performance:
 
-## Learn More
+- Pages are statically generated at build time
+- On page access, Next.js checks if data needs refreshing
+- Changed data triggers background revalidation
+- Users always see up-to-date information
 
-To learn more about Next.js, take a look at the following resources:
+### Debugging Data Status
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+During development, check your browser console for revalidation logs:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+```
+[revalidate] No change for path /events/1.
+[revalidate] Path /events/2 was revalidated due to data change.
+```
