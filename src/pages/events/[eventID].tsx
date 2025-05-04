@@ -12,16 +12,27 @@
 
 import Counter from "@/components/Counter";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import { checkContentUpdate } from "@/lib/checkContentUpdate";
 import { Event } from "@/types";
 import { MapPinIcon } from "lucide-react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
+import { useEffect } from "react";
 
 type PageProps = {
   event: Event;
+  id: string;
 };
 
-export default function EventPage({ event }: PageProps) {
+export default function EventPage({ event, id }: PageProps) {
+  useEffect(() => {
+    checkContentUpdate({
+      path: `/events/${id}`,
+      id: id,
+      originalData: event,
+    });
+  }, []);
+
   return (
     <>
       <Head>
@@ -94,6 +105,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   return {
-    props: { event },
+    props: { event, id },
   };
 };
