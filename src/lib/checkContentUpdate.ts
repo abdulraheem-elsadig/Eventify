@@ -25,7 +25,7 @@ export async function checkContentUpdate({
   path: string;
   id: string | number;
   originalData: any;
-  onRevalidated: () => void;
+  onRevalidated: (event: Event) => void;
 }) {
   try {
     const res = await fetch(
@@ -34,7 +34,7 @@ export async function checkContentUpdate({
     const data: Event[] = await res.json();
 
     // Filter to the exact match
-    const event = data.find((event) => event.id === Number(id));
+    const event = data.find((event) => Number(event.id) === Number(id));
 
     // Check if content changed
     const changed = JSON.stringify(event) !== JSON.stringify(originalData);
@@ -42,10 +42,10 @@ export async function checkContentUpdate({
     if (changed) {
       // Revalidate event page when content change
       await fetch(`/api/revalidate?path=${encodeURIComponent(path)}`);
-      onRevalidated();
       console.log(
         `[revalidate] Path ${path} was revalidated due to data change.`
       );
+      onRevalidated(event!);
     } else {
       console.log(`[revalidate] No change for path ${path}.`);
     }

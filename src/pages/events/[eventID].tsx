@@ -17,21 +17,24 @@ import { Event } from "@/types";
 import { MapPinIcon } from "lucide-react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 type PageProps = {
-  event: Event;
+  data: Event;
   id: string;
 };
 
-export default function EventPage({ event, id }: PageProps) {
+export default function EventPage({ data, id }: PageProps) {
+  const [event, setEvent] = useState(data);
+
   useEffect(() => {
     checkContentUpdate({
       path: `/events/${id}`,
       id: id,
       originalData: event,
-      onRevalidated: () => {
-        window.location.reload(); // ← force full reload to see updated static content
+      onRevalidated: (newEvent) => {
+        setEvent(newEvent);
       },
     });
   }, []);
@@ -98,16 +101,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const res = await fetch(
     `https://68148b33225ff1af16292eee.mockapi.io/api/v1/events/?id=${id}`
   );
-  const data: Event[] = await res.json();
+  const events: Event[] = await res.json();
 
   // Filter to the exact match
-  const event = data.find((event) => event.id === Number(id));
+  const event = events.find((event) => Number(event.id) === Number(id));
 
   if (!event) {
     return { notFound: true };
   }
 
   return {
-    props: { event, id },
+    props: { data: event, id },
   };
 };
