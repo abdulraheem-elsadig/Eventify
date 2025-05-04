@@ -41,6 +41,7 @@ export default function Filters() {
 
   const [searchValue, setSearchValue] = useState(title);
   const [date, setDate] = useState<DateRange | undefined>(undefined);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   // Use debounced search term to track the actual value being used in URL updates
   const debouncedSearchTerm = useDebounce<string>(searchValue, 500);
@@ -99,6 +100,7 @@ export default function Filters() {
 
     // Replace route to avoid adding to history stack
     router.replace(newUrl, undefined, { shallow: true });
+    setIsCalendarOpen(false);
   };
 
   const handleClearDate = () => {
@@ -116,6 +118,7 @@ export default function Filters() {
 
     // Replace route to avoid adding to history stack
     router.replace(newUrl, undefined, { shallow: true });
+    setIsCalendarOpen(false);
   };
 
   // Effect to update URL when debounced search term changes
@@ -191,7 +194,7 @@ export default function Filters() {
         </Select>
 
         {/* Date Select */}
-        <Popover>
+        <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
           <PopoverTrigger asChild className="bg-white">
             <Button
               variant="outline"
