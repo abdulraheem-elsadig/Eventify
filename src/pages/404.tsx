@@ -13,7 +13,9 @@ export default function Custom404() {
         />
       </div>
       <h1 className="font-bold text-xl mb-2">Page Not Found</h1>
-      <p>Try adjusting your search to find what you’re looking for</p>
+      <p className="text-primary-gray">
+        Try adjusting your search to find what you’re looking for
+      </p>
 
       <Link
         href="/"

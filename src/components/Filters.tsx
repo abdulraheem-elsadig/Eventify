@@ -176,7 +176,7 @@ export default function Filters() {
               <Button onClick={handleUpdateDate} size="sm">
                 Search
               </Button>
-              <Button onClick={handleClearDate} size="sm">
+              <Button onClick={handleClearDate} size="sm" variant="outline">
                 clear
               </Button>
             </div>
