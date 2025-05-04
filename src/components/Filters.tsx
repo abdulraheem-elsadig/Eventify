@@ -180,7 +180,7 @@ export default function Filters() {
           onValueChange={(value) => updateParam("location", value)}
         >
           <SelectTrigger className="bg-white">
-            <MapPinIcon className="mr-2 h-4 w-4" />
+            <MapPinIcon className="mr-2 h-4 w-4 text-primary-gray" />
             <SelectValue placeholder="locations" />
           </SelectTrigger>
           <SelectContent>
@@ -200,7 +200,7 @@ export default function Filters() {
               variant="outline"
               className="w-fit justify-start text-left font-normal"
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
+              <CalendarIcon className="mr-2 h-4 w-4 text-primary-gray" />
               {formattedDateRange}
             </Button>
           </PopoverTrigger>
