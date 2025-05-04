@@ -22,6 +22,23 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <meta name="apple-mobile-web-app-title" content="MyWebSite" />
         <link rel="manifest" href="/favicon/site.webmanifest" />
+
+        <title>Eventify</title>
+        <meta
+          name="description"
+          content="Manage events easily with Eventify – your all-in-one solution for planning, registration, ticketing, and real-time updates."
+        />
+        <meta property="og:title" content="Eventify" />
+        <meta
+          property="og:description"
+          content="Manage events easily with Eventify – your all-in-one solution for planning, registration, ticketing, and real-time updates."
+        />
+        <meta property="og:image" content="/favicon/favicon-96x96.png" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Eventify" />
+        <meta name="twitter:description" content="/favicon/favicon-96x96.png" />
+        <meta name="twitter:image" content="/favicon/favicon-96x96.png" />
       </Head>
       <div className="container">
         <Logo />
