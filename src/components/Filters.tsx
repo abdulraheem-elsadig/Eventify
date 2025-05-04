@@ -10,7 +10,7 @@
 
 import { Input } from "./ui/input";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import dayjs from "dayjs";
 import {
   Select,
@@ -19,18 +19,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { debounce } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
 import { CalendarIcon, MapPinIcon } from "lucide-react";
 import { Calendar } from "./ui/calendar";
 import { DateRange } from "react-day-picker";
+import { useDebounce } from "@/hooks/useDebounce";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function Filters() {
   const router = useRouter();
-  const { title, location, type, from, to } = router.query;
-  const [searchValue, setSearchValue] = useState((title as string) || "");
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Get init value from url params
+  const title = searchParams?.get("title") || "";
+  const location = searchParams?.get("location") || "all";
+  const type = searchParams?.get("type") || "all";
+  const from = searchParams?.get("from");
+  const to = searchParams?.get("to");
+
+  const [searchValue, setSearchValue] = useState(title);
   const [date, setDate] = useState<DateRange | undefined>(undefined);
+
+  // Use debounced search term to track the actual value being used in URL updates
+  const debouncedSearchTerm = useDebounce<string>(searchValue, 500);
+
+  // Track the last URL update to prevent loops
+  const lastUpdateRef = useRef("");
 
   // String to display in the calendar button
   const formattedDateRange =
@@ -42,81 +58,123 @@ export default function Filters() {
       ? `${dayjs(date.from).format("MMM D, YYYY")} - ...`
       : "All Dates";
 
-  // Function to update url params
+  // Function to update url params with better history management
   const updateParam = (
     paramName: "location" | "type" | "title" | "from" | "to",
     value: string
   ) => {
-    const currentQuery = { ...router.query };
-    currentQuery[paramName] = value;
-    if (!value || value === "all") delete currentQuery[paramName];
-    router.push(
-      {
-        pathname: router.pathname,
-        query: currentQuery,
-      },
-      undefined,
-      { shallow: true }
-    );
+    // Create URLSearchParams from current search parameters
+    const params = new URLSearchParams(searchParams?.toString());
+
+    // Update or remove the parameter
+    if (!value || value === "all") {
+      params.delete(paramName);
+    } else {
+      params.set(paramName, value);
+    }
+
+    // Create the new URL string
+    const queryString = params.toString();
+    const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
+
+    // Track this update to prevent loops
+    lastUpdateRef.current = newUrl;
+
+    // Use router.replace to avoid adding to history stack
+    router.replace(newUrl, undefined, { shallow: true });
   };
 
-  // Debounced to update search after delay
-  const debouncedUpdateQuery = useCallback(
-    debounce((value: string) => {
-      updateParam("title", value);
-    }, 500),
-    [router]
-  );
-
-  // Update search on change (state & params)
+  // Update search on change (state only)
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchValue(value);
-    debouncedUpdateQuery(value);
+    // We'll let the effect handle URL updates now
   };
 
   // Update the date params (from & to) in url
   const handleUpdateDate = () => {
     if (!date?.from || !date?.to) return;
-    const currentQuery = { ...router.query };
-    currentQuery.from = date.from.toISOString();
-    currentQuery.to = date.to.toISOString();
 
-    router.push(
-      {
-        pathname: router.pathname,
-        query: currentQuery,
-      },
-      undefined,
-      { shallow: true }
-    );
+    // Create URLSearchParams from current search parameters
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set("from", date.from.toISOString());
+    params.set("to", date.to.toISOString());
+
+    // Create the new URL
+    const queryString = params.toString();
+    const newUrl = `${pathname}?${queryString}`;
+
+    // Track this update
+    lastUpdateRef.current = newUrl;
+
+    // Replace route to avoid adding to history stack
+    router.replace(newUrl, undefined, { shallow: true });
   };
 
   const handleClearDate = () => {
     // Reset the date state
     setDate(undefined);
 
-    // Remove date parameters from URL
-    const currentQuery = { ...router.query };
-    delete currentQuery.from;
-    delete currentQuery.to;
+    // Create URLSearchParams from current search parameters
+    const params = new URLSearchParams(searchParams?.toString());
+    params.delete("from");
+    params.delete("to");
 
-    router.push(
-      {
-        pathname: router.pathname,
-        query: currentQuery,
-      },
-      undefined,
-      { shallow: true }
-    );
+    // Create the new URL
+    const queryString = params.toString();
+    const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
+
+    // Track this update
+    lastUpdateRef.current = newUrl;
+
+    // Replace route to avoid adding to history stack
+    router.replace(newUrl, undefined, { shallow: true });
   };
 
-  // Set the initial state for date from url
+  // Effect to update URL when debounced search term changes
+  useEffect(() => {
+    // Only update if the value has actually changed
+    if (debouncedSearchTerm !== title) {
+      updateParam("title", debouncedSearchTerm);
+    }
+  }, [debouncedSearchTerm]);
+
+  // Set the initial state for date from url and react to date parameter changes
   useEffect(() => {
     if (from && to) {
-      setDate({ from: new Date(from as string), to: new Date(to as string) });
+      setDate({ from: new Date(from), to: new Date(to) });
+    } else if (!from && !to && date) {
+      // Clear date state if URL params were removed
+      setDate(undefined);
     }
   }, [from, to]);
+
+  // Sync searchValue with URL parameter
+  useEffect(() => {
+    // Only update local state if it's different from the URL parameter
+    // This prevents loops while still keeping things in sync
+    if (searchValue !== title) {
+      setSearchValue(title);
+    }
+  }, [title]);
+
+  // Listen for route changes to properly handle navigation (sync search value with url search value)
+  useEffect(() => {
+    const handleRouteChange = () => {
+      // When route changes, ensure our local state matches URL parameters
+      const currentTitle = searchParams?.get("title") || "";
+      if (searchValue !== currentTitle) {
+        setSearchValue(currentTitle);
+      }
+    };
+
+    // Listen for route change complete event
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events, searchParams]);
 
   return (
     <div className="flex flex-col gap-5 xl:flex-row xl:justify-between">
@@ -124,7 +182,7 @@ export default function Filters() {
       <Input
         placeholder="Search Events"
         className="w-full xl:max-w-[400px] bg-white"
-        value={searchValue || title}
+        value={searchValue}
         onChange={handleSearchChange}
       />
       <div className="flex gap-3 flex-wrap">

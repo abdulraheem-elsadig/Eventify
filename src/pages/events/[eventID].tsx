@@ -17,7 +17,6 @@ import { Event } from "@/types";
 import { MapPinIcon } from "lucide-react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 type PageProps = {
